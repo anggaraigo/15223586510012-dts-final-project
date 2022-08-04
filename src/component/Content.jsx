@@ -9,24 +9,23 @@ function Content() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const getNews = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${term}&api-key=${process.env.REACT_APP_API_KEY}`
+        );
+        // const news = await data.json();
+        console.log(data.response.docs);
+        setNews(data.response.docs);
+        // console.log(data.response.docs);
+        // setNews(data.response);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error, "<= error iNews");
+      }
+    };
     getNews();
   }, [term]);
-
-  const getNews = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${term}&api-key=${process.env.REACT_APP_API_KEY}`
-      );
-      // const news = await data.json();
-      console.log(data.response.docs);
-      setNews(data.response.docs);
-      // console.log(data.response.docs);
-      // setNews(data.response);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error, "<= error iNews");
-    }
-  };
 
   return (
     <>
